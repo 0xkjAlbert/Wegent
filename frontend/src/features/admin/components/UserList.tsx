@@ -136,7 +136,24 @@ const UserList: React.FC = () => {
 
     setSaving(true);
     try {
-      await adminApis.createUser(formData);
+      // Clean empty fields before sending to backend
+      const cleanData: AdminUserCreate = {
+        user_name: formData.user_name,
+        role: formData.role,
+        auth_source: formData.auth_source,
+      };
+
+      // Only include password if it's provided
+      if (formData.password) {
+        cleanData.password = formData.password;
+      }
+
+      // Only include email if it's not empty
+      if (formData.email && formData.email.trim()) {
+        cleanData.email = formData.email.trim();
+      }
+
+      await adminApis.createUser(cleanData);
       toast({ title: t('admin:users.success.created') });
       setIsCreateDialogOpen(false);
       resetForm();
@@ -158,11 +175,18 @@ const UserList: React.FC = () => {
     setSaving(true);
     try {
       const updateData: AdminUserUpdate = {};
+
+      // Only include changed fields
       if (formData.user_name !== selectedUser.user_name) {
         updateData.user_name = formData.user_name;
       }
       if (formData.email !== selectedUser.email) {
-        updateData.email = formData.email || undefined;
+        // Only include email if it's not empty, otherwise set to undefined to clear it
+        if (formData.email && formData.email.trim()) {
+          updateData.email = formData.email.trim();
+        } else {
+          updateData.email = undefined;
+        }
       }
       if (formData.role !== selectedUser.role) {
         updateData.role = formData.role as UserRole;
