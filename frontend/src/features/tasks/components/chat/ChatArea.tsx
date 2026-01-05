@@ -358,6 +358,12 @@ export default function ChatArea({
     isSubtaskStreaming: streamHandlers.isSubtaskStreaming,
     onStopStream: streamHandlers.stopStream,
     onSendMessage: () => streamHandlers.handleSendMessage(),
+    onVoiceTranscript: (text: string) => {
+      // Append transcribed text to input message
+      const currentText = chatState.taskInputMessage.trim();
+      const newText = currentText ? `${currentText} ${text}` : text;
+      chatState.setTaskInputMessage(newText);
+    },
   };
 
   return (

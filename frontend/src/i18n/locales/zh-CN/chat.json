@@ -424,5 +424,13 @@
       "summary": "总结评价",
       "improved_answer": "改进后的回答"
     }
+  },
+  "voice": {
+    "microphone_access_denied": "无法访问麦克风",
+    "microphone_access_denied_desc": "请允许浏览器访问麦克风以使用语音输入功能",
+    "no_speech_detected": "未检测到语音",
+    "no_speech_detected_desc": "录音中没有检测到语音,请重试",
+    "transcription_failed": "语音识别失败",
+    "transcription_failed_desc": "无法将语音转换为文字,请重试"
   }
 }
