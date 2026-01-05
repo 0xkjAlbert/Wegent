@@ -243,6 +243,11 @@ class GitLabProvider(RepositoryProvider):
                 continue
 
             try:
+                self.logger.info(
+                    f"[GitLab] Fetching repositories for user {user.user_name} "
+                    f"from {git_domain}, page={page}, limit={limit}"
+                )
+
                 response = self._make_request_with_auth_retry(
                     method="GET",
                     url=f"{api_base_url}/projects",
@@ -256,6 +261,10 @@ class GitLabProvider(RepositoryProvider):
                 )
 
                 repos = response.json()
+                self.logger.info(
+                    f"[GitLab] Successfully fetched {len(repos)} repositories "
+                    f"for user {user.user_name} from {git_domain}"
+                )
 
                 all_repos.extend(
                     [
@@ -285,8 +294,12 @@ class GitLabProvider(RepositoryProvider):
                         self._fetch_all_repositories_async(user, git_token, git_domain)
                     )
 
-            except requests.exceptions.RequestException:
-                # skip failed domain, continue others
+            except requests.exceptions.RequestException as e:
+                # Log error instead of silently skipping
+                self.logger.error(
+                    f"[GitLab] Failed to fetch repositories from {git_domain} "
+                    f"for user {user.user_name}: {str(e)}"
+                )
                 continue
 
         return all_repos
