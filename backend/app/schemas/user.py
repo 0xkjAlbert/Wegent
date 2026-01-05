@@ -49,6 +49,18 @@ class UserBase(BaseModel):
     email: Optional[EmailStr] = None
     is_active: Optional[bool] = True
 
+    @field_validator("email", mode="before")
+    @classmethod
+    def empty_str_to_none(cls, v: Optional[str]) -> Optional[str]:
+        """Convert empty string to None before EmailStr validation.
+
+        This allows clients to send empty strings for optional email field,
+        which will be treated as None (no email provided).
+        """
+        if v is None or v == "" or (isinstance(v, str) and v.strip() == ""):
+            return None
+        return v
+
 
 class UserCreate(UserBase):
     """User creation model"""
