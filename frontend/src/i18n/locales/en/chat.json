@@ -424,5 +424,13 @@
       "summary": "Summary",
       "improved_answer": "Improved Answer"
     }
+  },
+  "voice": {
+    "microphone_access_denied": "Microphone Access Denied",
+    "microphone_access_denied_desc": "Please allow microphone access to use voice input",
+    "no_speech_detected": "No Speech Detected",
+    "no_speech_detected_desc": "No speech was detected in the recording. Please try again.",
+    "transcription_failed": "Transcription Failed",
+    "transcription_failed_desc": "Unable to convert speech to text. Please try again."
   }
 }

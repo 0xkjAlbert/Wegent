@@ -85,6 +85,10 @@ dependencies = [
     # WebSocket support
     "python-socketio>=5.10.0",
 
+    # Voice recognition (Whisper)
+    "openai-whisper>=20231117",
+    "tqdm>=4.66.0",
+
     # RAG (Retrieval-Augmented Generation) dependencies
     "llama-index-core>=0.12.0",
     "llama-index-vector-stores-elasticsearch>=0.4.0",

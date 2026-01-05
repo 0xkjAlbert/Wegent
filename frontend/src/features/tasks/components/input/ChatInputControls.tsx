@@ -4,7 +4,7 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { CircleStop } from 'lucide-react';
 import ModelSelector, { Model } from '../selector/ModelSelector';
 import RepositorySelector from '../selector/RepositorySelector';
@@ -13,6 +13,7 @@ import ClarificationToggle from '../clarification/ClarificationToggle';
 import CorrectionModeToggle from '../CorrectionModeToggle';
 import ChatContextInput from '../chat/ChatContextInput';
 import AttachmentButton from '../AttachmentButton';
+import VoiceInputButton from '../voice/VoiceInputButton';
 import SendButton from './SendButton';
 import LoadingDots from '../message/LoadingDots';
 import QuotaUsage from '../params/QuotaUsage';
@@ -86,6 +87,8 @@ export interface ChatInputControlsProps {
   // Actions
   onStopStream: () => void;
   onSendMessage: () => void;
+  // Voice input
+  onVoiceTranscript?: (text: string) => void;
 }
 
 /**
@@ -142,9 +145,13 @@ export function ChatInputControls({
   isSubtaskStreaming,
   onStopStream,
   onSendMessage,
+  onVoiceTranscript,
 }: ChatInputControlsProps) {
   // Always use compact mode (icon only) to save space
   const shouldUseCompactQuota = true;
+
+  // Voice input state
+  const [voiceInputMode, setVoiceInputMode] = useState(false);
 
   // Determine the send button state
   const renderSendButton = () => {
@@ -295,6 +302,14 @@ export function ChatInputControls({
       </div>
 
       <div className="ml-auto flex items-center gap-2 flex-shrink-0">
+        {/* Voice Input Button - only show for chat shell */}
+        {isChatShell(selectedTeam) && onVoiceTranscript && (
+          <VoiceInputButton
+            onTranscriptComplete={onVoiceTranscript}
+            disabled={isLoading || isStreaming}
+          />
+        )}
+
         {/* Quota Usage */}
         {!shouldHideQuotaUsage && (
           <QuotaUsage className="flex-shrink-0" compact={shouldUseCompactQuota} />
